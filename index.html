@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permutation, Combination & Probability</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/framer-motion/4.1.17/framer-motion.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            overflow: hidden;
+        }
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+        .slide {
+            width: 80%;
+            height: 70%;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            position: absolute;
+        }
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .formula {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .key-points {
+            list-style-type: disc;
+            text-align: left;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { motion } = window.Motion || FramerMotion;
+        const { useState } = React;
+
+        const MathConcepts = {
+            PERMUTATION: {
+                definition: "Arrangement where ORDER MATTERS",
+                formula: "P(n,r) = n! / (n-r)!",
+                characteristics: [
+                    "Sequence is crucial",
+                    "Different arrangements are unique"
+                ],
+                example: "Arranging 3 people in 2 chairs"
+            },
+            COMBINATION: {
+                definition: "Selection where ORDER DOESN'T MATTER",
+                formula: "C(n,r) = n! / (r! * (n-r)!)",
+                characteristics: [
+                    "Group selection priority",
+                    "Arrangement is irrelevant"
+                ],
+                example: "Selecting 2 people from a group of 5"
+            },
+            PROBABILITY: {
+                definition: "Likelihood of an Event Occurring",
+                formula: "P(Event) = Favorable Outcomes / Total Possible Outcomes",
+                characteristics: [
+                    "Always between 0 and 1",
+                    "Measures chance of occurrence"
+                ],
+                example: "Probability of coin toss"
+            }
+        };
+
+        const slides = [
+            {
+                title: "Mathematical Journey: Permutations, Combinations & Probability",
+                content: "Exploring Mathematical Arrangements and Probabilities",
+                background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+                textColor: "white",
+                keyPoints: [
+                    "Understanding Mathematical Arrangements",
+                    "Calculating Probability",
+                    "Real-world Applications"
+                ]
+            },
+            {
+                title: "Permutations Explained",
+                content: MathConcepts.PERMUTATION.definition,
+                formula: MathConcepts.PERMUTATION.formula,
+                keyPoints: MathConcepts.PERMUTATION.characteristics,
+                example: MathConcepts.PERMUTATION.example
+            },
+            {
+                title: "Combination Basics",
+                content: MathConcepts.COMBINATION.definition,
+                formula: MathConcepts.COMBINATION.formula,
+                keyPoints: MathConcepts.COMBINATION.characteristics,
+                example: MathConcepts.COMBINATION.example
+            },
+            {
+                title: "Probability Fundamentals",
+                content: MathConcepts.PROBABILITY.definition,
+                formula: MathConcepts.PROBABILITY.formula,
+                keyPoints: MathConcepts.PROBABILITY.characteristics,
+                example: MathConcepts.PROBABILITY.example
+            },
+            {
+                title: "Journey Completed!",
+                content: "Mastering Permutations, Combinations & Probability",
+                keyPoints: [
+                    "Understood Arrangement Principles",
+                    "Learned Probability Calculations",
+                    "Connected Math to Real-world Scenarios"
+                ]
+            }
+        ];
+
+        function Presentation() {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [direction, setDirection] = useState(1); // 1 for next, -1 for previous
+
+            const nextSlide = () => {
+                setDirection(1);
+                setCurrentSlide((prev) => (prev + 1) % slides.length);
+            };
+
+            const prevSlide = () => {
+                setDirection(-1);
+                setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+            };
+
+            const currentSlideData = slides[currentSlide];
+
+            return (
+                <div className="presentation-container">
+                    <motion.div 
+                        key={currentSlide}
+                        initial={{ opacity: 0, x: direction > 0 ? 300 : -300 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: direction > 0 ? -300 : 300 }}
+                        transition={{ duration: 0.8, ease: "easeInOut" }}
+                        className="slide"
+                        style={{ 
+                            background: currentSlideData.background || 'white',
+                            color: currentSlideData.textColor || 'black'
+                        }}
+                    >
+                        <h1>{currentSlideData.title}</h1>
+                        <p>{currentSlideData.content}</p>
+                        
+                        {currentSlideData.formula && (
+                            <div className="formula">
+                                Formula: {currentSlideData.formula}
+                            </div>
+                        )}
+                        
+                        {currentSlideData.keyPoints && (
+                            <ul className="key-points">
+                                {currentSlideData.keyPoints.map((point, index) => (
+                                    <li key={index}>{point}</li>
+                                ))}
+                            </ul>
+                        )}
+                        
+                        {currentSlideData.example && (
+                            <div className="example">
+                                Example: {currentSlideData.example}
+                            </div>
+                        )}
+                    </motion.div>
+                    
+                    <div className="navigation">
+                        <button className="btn" onClick={prevSlide}>Previous</button>
+                        <button className="btn" onClick={nextSlide}>Next</button>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<Presentation />, document.getElementById('root'));
+    </script>
+</body>
+</html>
